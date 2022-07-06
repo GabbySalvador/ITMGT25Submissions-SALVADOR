@@ -152,24 +152,12 @@ def vigenere_cipher(message, key):
     
     jumbled_text=""
     final_text=""
-    space_deductions = 0
     m=len(message)
     n=len(key)
     
     if m!=n:
         for b in range(m):
-            if (message[b]!= " "):
-                
-                space_deductions+=0
-                
-                if space_deductions>=n:
-                        jumbled_text+=key[(b%n)-(space_deductions%n)]
-                    
-                elif space_deductions<=n:
-                        jumbled_text+=key[(b%n)-(space_deductions)]
-            else:
-                space_deductions+=1
-                jumbled_text+=" "
+            jumbled_text+=key[(b%n)]
         
         for c,d in zip(message,jumbled_text):
         
