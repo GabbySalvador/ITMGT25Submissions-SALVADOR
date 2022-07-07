@@ -40,7 +40,7 @@ def shift_letter(letter, shift):
         return (' ')
         
     else:
-         return alphabet[(alphabet.index(letter)+shift)%26]
+        return alphabet[(alphabet.index(letter)+shift)%26]
              
 
                                                     
@@ -110,7 +110,7 @@ def shift_by_letter(letter, letter_shift):
     # Replace `pass` with your code. 
     # Stay within the function. Only use the parameters as input. The function should return your answer.
     
-        alphabet=["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
+    alphabet=["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
     
     if letter== " ":
         return (' ')
@@ -150,30 +150,50 @@ def vigenere_cipher(message, key):
     # Stay within the function. Only use the parameters as input. The function should return your answer.
     
     
-    shift_list=[]
-    translatedText =""
+    jumbled_text=""
+    final_text=""
+    m=len(message)
     n=len(key)
-    i=0
     
-    #gets index of each character in the key and puts them in a list
-    for b in key: 
-            b_index = ord(b) - ord('A')
-            shift_list.append(b_index)
-            
-            
-    for c in message:
+    if m!=n:
+        for b in range(m):
+            jumbled_text+=key[(b%n)]
         
-        if c==" ":
-            translatedText += " "
-            i += 1
+        for c,d in zip(message,jumbled_text):
         
-        else:
-            shift = shift_list[(i%n)] #gets the corresponding shift number of a specific character in the message
-            shifted_c = chr((ord(c) - ord('A') + shift)%26 + ord('A'))
-            translatedText += shifted_c
-            i += 1
+            if c.isupper():
+                c_unicode=ord(c)
+                c_index=c_unicode - ord("A")
+                d_unicode=ord(d)
+                d_index=d_unicode- ord("A")
+                
+                new_index=(c_index+d_index)%26
+                new_unicode=new_index+ord("A")
+                new_character=chr(new_unicode)
+                final_text=final_text+new_character
+            else:
+                final_text+=c 
+                
+        return f'{final_text}'
     
-    return translatedText
+    else:
+        
+         for c,d in zip(message,key):
+        
+            if c.isupper():
+                c_unicode=ord(c)
+                c_index=c_unicode - ord("A")
+                d_unicode=ord(d)
+                d_index=d_unicode- ord("A")
+                
+                new_index=(c_index+d_index)%26
+                new_unicode=new_index+ord("A")
+                new_character=chr(new_unicode)
+                final_text=final_text+new_character
+            else:
+                final_text+=c 
+         
+    return f'{final_text}'
 
 def scytale_cipher(message, shift):
     '''Scytale Cipher.
@@ -223,15 +243,14 @@ def scytale_cipher(message, shift):
     # Stay within the function. Only use the parameters as input. The function should return your answer.
 
 
-        while len(message)%shift!=0:
-              message=message+"_"
+    while len(message)%shift!=0:
+        message=message+"_"
 
-        n = len(message)
-        ciphertext = ['-'] * n
-        for i in range(n):
-            ciphertext[(i % (n // shift)) * shift + (i // (n // shift))] = message[i] 
-        return "".join(ciphertext)
-    
+    n = len(message)
+    ciphertext = ['-'] * n
+    for i in range(n):
+        ciphertext[(i % (n // shift)) * shift + (i // (n // shift))] = message[i] 
+    return "".join(ciphertext)
 
 
 def scytale_decipher(message, shift):
